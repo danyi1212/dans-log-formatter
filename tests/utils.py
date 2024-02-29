@@ -14,7 +14,8 @@ def logger_factory(formatter: logging.Formatter) -> (logging.Logger, StringIO):
     return logger, stream
 
 
-def read_stream_log_line(stream: TextIO) -> dict:
-    stream.seek(0)
+def read_stream_log_line(stream: TextIO, *, seek: bool = True) -> dict:
+    if seek:
+        stream.seek(0)
     line = stream.readline()
     return json.loads(line)
