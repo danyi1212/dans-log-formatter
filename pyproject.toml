@@ -10,6 +10,7 @@ python = "^3.12"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.2"
+ruff = "^0.3.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -19,4 +20,30 @@ build-backend = "poetry.core.masonry.api"
 [tool.pytest.ini_options]
 testpaths = [
     "tests",
+]
+
+
+[tool.ruff]
+line-length = 120
+src = ["dans_log_formatter", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E", # pycodestyle
+    "W", # pycodestyle
+    "F", # pyflakes
+    "N", # pep8
+    "BLE", # flake8 blind except
+    "FBT", # flake8 boolean trap
+    "B", # flake8 bug bear
+    "C4", # flake8 comprehensions
+    "PIE", # flake8 pie
+    "T20", # flake8 print
+    "SIM", # flake8 simplify
+    "ARG", # flake8 unused arguments
+    "PTH", # flake8 pathlib
+    "UP", # pyupgrade
+    "ERA", # comment out code
+    "PD", # pandas
+    "RUF", # ruff rules
 ]
