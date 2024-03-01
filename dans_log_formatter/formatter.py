@@ -6,14 +6,16 @@ from dans_log_formatter.providers.abstract import AbstractProvider
 
 # noinspection PyMethodMayBeStatic
 class JsonLogFormatter(Formatter):
-    message_size_limit = 64 * 1024
-    stack_size_limit = 128 * 1024
-
-    providers: list[AbstractProvider]
-
-    def __init__(self, providers: list[AbstractProvider] | None = None):
+    def __init__(
+        self,
+        providers: list[AbstractProvider] | None = None,
+        message_size_limit: int | None = 64 * 1024,
+        stack_size_limit: int | None = 128 * 1024,
+    ):
         super().__init__()
         self.providers = providers or []
+        self.message_size_limit = message_size_limit
+        self.stack_size_limit = stack_size_limit
 
     def get_providers(self, record: LogRecord) -> list[AbstractProvider]:  # noqa ARG002
         return self.providers

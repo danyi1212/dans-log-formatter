@@ -55,8 +55,7 @@ def test_truncate_message():
 
 
 def test_disable_truncate_message():
-    formatter = JsonLogFormatter()
-    formatter.message_size_limit = None
+    formatter = JsonLogFormatter(message_size_limit=None)
     logger, stream = logger_factory(formatter)
 
     logger.info("*" * 100_000)
@@ -67,7 +66,7 @@ def test_disable_truncate_message():
 
 
 def test_not_truncate_message():
-    formatter = JsonLogFormatter()
+    formatter = JsonLogFormatter(message_size_limit=100)
     logger, stream = logger_factory(formatter)
 
     logger.info("*" * formatter.message_size_limit)
@@ -78,7 +77,7 @@ def test_not_truncate_message():
 
 
 def test_truncate_stack_info():
-    formatter = JsonLogFormatter()
+    formatter = JsonLogFormatter(stack_size_limit=100)
     formatter.formatStack = lambda _: "hello world" + "*" * formatter.stack_size_limit
     logger, stream = logger_factory(formatter)
 
@@ -91,7 +90,7 @@ def test_truncate_stack_info():
 
 
 def test_truncate_exception():
-    formatter = JsonLogFormatter()
+    formatter = JsonLogFormatter(stack_size_limit=300)
     logger, stream = logger_factory(formatter)
 
     try:
