@@ -15,7 +15,7 @@ class DjangoRequestProvider(AbstractContextProvider):
         super().__init__(django_request_context)
 
     def get_context_attributes(self, record: LogRecord, request: HttpRequest) -> None | dict[str, Any]:  # noqa ARG002
-        return {
+        result = {
             "resource": self.get_resource(request),
             "http.url": request.build_absolute_uri(),
             "http.method": request.method,
@@ -23,6 +23,12 @@ class DjangoRequestProvider(AbstractContextProvider):
             "http.useragent": request.headers.get("user-agent"),
             "http.remote_addr": self.extract_remote_addr(request),
         }
+        if user := getattr(request, "user", None):
+            result["user.id"] = user.id if user.is_authenticated else 0
+            result["user.name"] = str(user)
+            result["user.email"] = getattr(user, "email", None)
+
+        return result
 
     def get_resource(self, request: HttpRequest) -> str:
         try:

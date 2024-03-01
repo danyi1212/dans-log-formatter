@@ -17,7 +17,17 @@ settings.configure(
             "NAME": ":memory:",
         }
     },
-    MIDDLEWARE=["dans_log_formatter.contrib.django.middleware.LogContextMiddleware"],
+    SECRET_KEY="NOTSOSECRET",
+    INSTALLED_APPS=[
+        "django.contrib.contenttypes",
+        "django.contrib.sessions",
+        "django.contrib.auth",
+    ],
+    MIDDLEWARE=[
+        "dans_log_formatter.contrib.django.middleware.LogContextMiddleware",
+        "django.contrib.sessions.middleware.SessionMiddleware",
+        "django.contrib.auth.middleware.AuthenticationMiddleware",
+    ],
     ALLOWED_HOSTS=["testserver"],
 )
 
@@ -58,3 +68,6 @@ def test_django_integration():
     assert record["http.remote_addr"] == "127.0.0.2"
     assert record["http.referrer"] == "http://example.com"
     assert record["http.useragent"] == "some user agent"
+    assert record["user.id"] == 0
+    assert record["user.name"] == "AnonymousUser"
+    assert record["user.email"] is None
