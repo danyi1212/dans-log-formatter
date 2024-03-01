@@ -15,8 +15,8 @@ class AbstractContextProvider(AbstractProvider, ABC):
         if value is None:
             return
 
-        return self.format_context_fields(record, value)
+        return self.get_context_attributes(record, value)
 
     @abstractmethod
-    def format_context_fields(self, record: LogRecord, context_value) -> None | dict[str, Any]:
+    def get_context_attributes(self, record: LogRecord, context_value) -> None | dict[str, Any]:
         raise NotImplementedError()

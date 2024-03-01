@@ -24,7 +24,7 @@ class ContextProvider(AbstractContextProvider):
     def __init__(self):
         super().__init__(_context)
 
-    def format_context_fields(self, record: LogRecord, context_value: dict[str, Any]):  # noqa ARG002
+    def get_context_attributes(self, record: LogRecord, context_value: dict[str, Any]):  # noqa ARG002
         return context_value
 
 
