@@ -4,8 +4,9 @@ from io import StringIO
 from typing import TextIO
 
 
-def logger_factory(formatter: logging.Formatter) -> (logging.Logger, StringIO):
+def logger_factory(formatter: logging.Formatter) -> tuple[logging.Logger, StringIO]:
     logger = logging.getLogger("tests")
+    logger.propagate = False
     logger.setLevel(logging.DEBUG)
     stream = StringIO()
     handler = logging.StreamHandler(stream)
