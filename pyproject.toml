@@ -12,11 +12,13 @@ python = "^3.12"
 ujson = { version = "^5.9.0", optional = true }
 orjson = { version = "^3.9.15", optional = true }
 fastapi = { version = "^0.110.0", optional = true }
+flask = { version = "^3.0.2", optional = true }
 
 [tool.poetry.extras]
 ujson = ["ujson"]
 orjson = ["orjson"]
 fastapi = ["fastapi"]
+flask = ["flask"]
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.2"
