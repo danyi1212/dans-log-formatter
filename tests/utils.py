@@ -2,10 +2,11 @@ import json
 import logging
 from io import StringIO
 from typing import TextIO
+from uuid import uuid4
 
 
 def logger_factory(formatter: logging.Formatter) -> tuple[logging.Logger, StringIO]:
-    logger = logging.getLogger("tests")
+    logger = logging.getLogger(str(uuid4()))
     logger.propagate = False
     logger.setLevel(logging.DEBUG)
     stream = StringIO()
