@@ -2,6 +2,7 @@ import os
 import threading
 
 from formatter import JsonLogFormatter
+from providers.context import ContextProvider, with_log_context
 from providers.extra import ExtraProvider
 from utils import logger_factory, read_stream_log_line
 
@@ -18,7 +19,7 @@ def test_formatter():
     assert isinstance(record["timestamp"], float)
     assert record["status"] == "INFO"
     assert record["message"] == "hello world!"
-    assert record["location"] == "formatter_test-test_formatter#14"
+    assert record["location"] == "formatter_test-test_formatter#15"
     assert record["file"] == __file__
     assert record["thread"] == f"MainThread ({threading.get_ident()})"
     assert record["process"] == f"MainProcess ({os.getpid()})"
@@ -46,7 +47,7 @@ def test_formatter_with_stack_info():
     assert "test_formatter_with_stack_info" in record["stack_info"]
 
 
-def test_formatter_truncate_message():
+def test_truncate_message():
     formatter = JsonLogFormatter()
     logger, stream = logger_factory(formatter)
 
@@ -58,7 +59,7 @@ def test_formatter_truncate_message():
     assert record["message"].endswith("...[TRUNCATED]")
 
 
-def test_formatter_disable_truncate_message():
+def test_disable_truncate_message():
     formatter = JsonLogFormatter()
     formatter.message_size_limit = None
     logger, stream = logger_factory(formatter)
@@ -70,7 +71,7 @@ def test_formatter_disable_truncate_message():
     assert not record["message"].endswith("...[TRUNCATED]")
 
 
-def test_formatter_not_truncate_message():
+def test_not_truncate_message():
     formatter = JsonLogFormatter()
     logger, stream = logger_factory(formatter)
 
@@ -81,7 +82,7 @@ def test_formatter_not_truncate_message():
     assert not record["message"].endswith("...[TRUNCATED]")
 
 
-def test_formatter_truncate_stack_info():
+def test_truncate_stack_info():
     formatter = JsonLogFormatter()
     formatter.formatStack = lambda _: "hello world" + "*" * formatter.stack_size_limit
     logger, stream = logger_factory(formatter)
@@ -94,7 +95,7 @@ def test_formatter_truncate_stack_info():
     assert record["stack_info"].endswith("...[TRUNCATED]")
 
 
-def test_formatter_truncate_exception():
+def test_truncate_exception():
     formatter = JsonLogFormatter()
     logger, stream = logger_factory(formatter)
 
@@ -124,19 +125,30 @@ def test_formatter_with_thread():
     assert record["thread"] == f"MyThread ({thread.ident})"
 
 
-def test_formatter_with_extra():
-    logger, stream = logger_factory(JsonLogFormatter([ExtraProvider()]))
-    logger.info("hello world!", extra={"extra": "value"})
-
-    record = read_stream_log_line(stream)
-    assert record.keys() == DEFAULT_ATTRIBUTES | {"extra"}
-    assert record["extra"] == "value"
-
-
-def test_formatter_with_extra_no_override():
+def test_provider_cannot_override_attributes():
     logger, stream = logger_factory(JsonLogFormatter([ExtraProvider()]))
     logger.info("hello world!", extra={"status": "value"})
 
     record = read_stream_log_line(stream)
     assert record.keys() == DEFAULT_ATTRIBUTES
+    assert record["status"] == "INFO"
+
+
+def test_provider_order_attribute_override():
+    logger, stream = logger_factory(
+        JsonLogFormatter(
+            [
+                ContextProvider(),
+                ExtraProvider(),
+            ]
+        )
+    )
+    with with_log_context(a=1, b=2, status="value"):
+        logger.info("hello world!", extra={"b": "override", "c": 3, "status": "override"})
+
+    record = read_stream_log_line(stream)
+    assert record.keys() == DEFAULT_ATTRIBUTES | {"a", "b", "c"}
+    assert record["a"] == 1
+    assert record["b"] == "override"
+    assert record["c"] == 3
     assert record["status"] == "INFO"
