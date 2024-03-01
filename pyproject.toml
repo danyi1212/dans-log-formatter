@@ -4,6 +4,8 @@ version = "0.1.0"
 description = ""
 authors = ["danyi1212 <danyi1212@gmail.com>"]
 readme = "README.md"
+include = ["dans_log_formatter/"]
+exclude = ["tests/", "*_test.py"]
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -17,12 +19,9 @@ pre-commit = "^3.6.2"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-
 [tool.pytest.ini_options]
-testpaths = [
-    "tests",
-]
-
+pythonpath = ["tests", "dans_log_formatter"]
+testpaths = ["tests"]
 
 [tool.ruff]
 line-length = 120
