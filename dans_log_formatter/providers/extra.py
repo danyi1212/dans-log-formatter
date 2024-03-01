@@ -5,6 +5,13 @@ from providers.abstract import AbstractProvider
 
 
 class ExtraProvider(AbstractProvider):
+    """
+    Include logger extra attributes in the log record.
+
+    Example:
+        logger.info("message", extra={"attribute": "value"})
+    """
+
     builtin_attrs: ClassVar[set[str]] = {
         "args",
         "asctime",

@@ -9,6 +9,18 @@ _context: ContextVar[dict[str, Any] | None] = ContextVar("custom_log_context", d
 
 
 class ContextProvider(AbstractContextProvider):
+    """
+    Inject custom context into the log record using with_log_context() decorator.
+    Context example:
+        with with_log_context(attribute="value"):
+            logger.info("message")
+
+    Decorator example:
+        @with_log_context(attribute="value")
+        def function():
+            logger.info("message")
+    """
+
     def __init__(self):
         super().__init__(_context)
 

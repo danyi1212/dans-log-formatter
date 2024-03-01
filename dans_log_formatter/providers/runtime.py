@@ -5,6 +5,10 @@ from providers.abstract import AbstractProvider
 
 
 class RuntimeProvider(AbstractProvider):
+    """
+    Add runtime information about thread, process and asyncio task to the log record.
+    """
+
     def get_attributes(self, record: LogRecord) -> None | dict[str, Any]:
         result = {}
         if record.process is not None:
