@@ -1,12 +1,9 @@
-import os
-import threading
-
 from formatter import JsonLogFormatter
 from providers.context import ContextProvider, with_log_context
 from providers.extra import ExtraProvider
 from utils import logger_factory, read_stream_log_line
 
-DEFAULT_ATTRIBUTES = {"timestamp", "status", "message", "location", "file", "thread", "process", "task"}
+DEFAULT_ATTRIBUTES = {"timestamp", "status", "message", "location", "file"}
 
 
 def test_formatter():
@@ -19,10 +16,8 @@ def test_formatter():
     assert isinstance(record["timestamp"], float)
     assert record["status"] == "INFO"
     assert record["message"] == "hello world!"
-    assert record["location"] == "formatter_test-test_formatter#15"
+    assert record["location"] == "formatter_test-test_formatter#12"
     assert record["file"] == __file__
-    assert record["thread"] == f"MainThread ({threading.get_ident()})"
-    assert record["process"] == f"MainProcess ({os.getpid()})"
     assert stream.readline() == ""
 
 
@@ -109,20 +104,6 @@ def test_truncate_exception():
     assert record["error"].startswith("Traceback (most recent call last):")
     assert "ValueError: hello world" in record["error"]
     assert record["error"].endswith("...[TRUNCATED]")
-
-
-def test_formatter_with_thread():
-    logger, stream = logger_factory(JsonLogFormatter())
-
-    thread = threading.Thread(
-        name="MyThread",
-        target=lambda: logger.info("hello world!"),
-    )
-    thread.start()
-    thread.join()
-
-    record = read_stream_log_line(stream)
-    assert record["thread"] == f"MyThread ({thread.ident})"
 
 
 def test_provider_cannot_override_attributes():

@@ -33,9 +33,6 @@ class JsonLogFormatter(Formatter):
         result["message"] = self.format_message(record)
         result["location"] = self.format_location(record)
         result["file"] = self.format_file(record)
-        result["thread"] = self.format_thread(record)
-        result["process"] = self.format_process(record)
-        result["task"] = self.format_task(record)
 
         if record.exc_info is not None:
             result["error"] = self.format_exception(record)
@@ -68,12 +65,3 @@ class JsonLogFormatter(Formatter):
 
     def format_file(self, record: LogRecord):
         return record.pathname
-
-    def format_thread(self, record: LogRecord):
-        return f"{record.threadName} ({record.thread})"
-
-    def format_process(self, record: LogRecord):
-        return f"{record.processName} ({record.process})"
-
-    def format_task(self, record: LogRecord):
-        return record.taskName
