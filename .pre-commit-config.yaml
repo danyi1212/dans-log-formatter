@@ -31,6 +31,7 @@ repos:
       - id: ruff
         files: \.py$
         types: [ file ]
+        args: [ --fix ]
       - id: ruff-format
         files: \.py$
         types: [ file ]

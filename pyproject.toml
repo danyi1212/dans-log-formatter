@@ -14,6 +14,7 @@ orjson = { version = "^3.9.15", optional = true }
 fastapi = { version = "^0.110.0", optional = true }
 flask = { version = "^3.0.2", optional = true }
 django = { version = "^5.0.2", optional = true }
+celery = { version = "^5.3.6", optional = true }
 
 [tool.poetry.extras]
 ujson = ["ujson"]
@@ -21,6 +22,7 @@ orjson = ["orjson"]
 fastapi = ["fastapi"]
 flask = ["flask"]
 django = ["django"]
+celery = ["celery"]
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.2"
