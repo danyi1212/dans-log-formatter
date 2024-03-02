@@ -1,18 +1,28 @@
 import json
 from logging import Formatter, LogRecord
+from typing import Literal, Mapping, Any
 
 from dans_log_formatter.providers.abstract import AbstractProvider
 
+DEFAULT_MESSAGE_SIZE_LIMIT = 64 * 1024
+DEFAULT_STACK_SIZE_LIMIT = 128 * 1024
+
 
 # noinspection PyMethodMayBeStatic
-class JsonLogFormatter(Formatter):
+class TextLogFormatter(Formatter):
     def __init__(
         self,
+        fmt: str | None = None,
+        datefmt: str | None = None,
+        style: Literal["%", "{", "$"] = "%",
+        validate: bool = True,  # noqa FBT001, FBT002
         providers: list[AbstractProvider] | None = None,
-        message_size_limit: int | None = 64 * 1024,
-        stack_size_limit: int | None = 128 * 1024,
+        *,
+        defaults: Mapping[str, Any] | None = None,
+        message_size_limit: int | None = DEFAULT_MESSAGE_SIZE_LIMIT,
+        stack_size_limit: int | None = DEFAULT_STACK_SIZE_LIMIT,
     ):
-        super().__init__()
+        super().__init__(fmt, datefmt, style, validate, defaults=defaults)
         self.providers = providers or []
         self.message_size_limit = message_size_limit
         self.stack_size_limit = stack_size_limit
@@ -21,7 +31,14 @@ class JsonLogFormatter(Formatter):
         return self.providers
 
     def format(self, record: LogRecord) -> str:
-        return json.dumps(self.get_attributes(record))
+        for attribute, value in self.get_attributes(record).items():
+            if not hasattr(record, attribute):
+                try:  # noqa SIM105
+                    setattr(record, attribute, value)
+                except AttributeError:
+                    pass
+
+        return super().format(record)
 
     def get_attributes(self, record: LogRecord) -> dict:
         result = {}
@@ -45,7 +62,7 @@ class JsonLogFormatter(Formatter):
         return result
 
     def format_timestamp(self, record: LogRecord):
-        return record.created
+        return self.formatTime(record)
 
     def format_message(self, record: LogRecord) -> str:
         return self.truncate_string(record.getMessage(), self.message_size_limit)
@@ -67,3 +84,20 @@ class JsonLogFormatter(Formatter):
 
     def format_file(self, record: LogRecord):
         return record.pathname
+
+
+class JsonLogFormatter(TextLogFormatter):
+    def __init__(
+        self,
+        providers: list[AbstractProvider] | None = None,
+        *,
+        message_size_limit: int | None = DEFAULT_MESSAGE_SIZE_LIMIT,
+        stack_size_limit: int | None = DEFAULT_STACK_SIZE_LIMIT,
+    ):
+        super().__init__(providers=providers, message_size_limit=message_size_limit, stack_size_limit=stack_size_limit)
+
+    def format(self, record: LogRecord) -> str:
+        return json.dumps(self.get_attributes(record))
+
+    def format_timestamp(self, record: LogRecord):
+        return record.created

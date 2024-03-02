@@ -1,4 +1,4 @@
-from formatter import JsonLogFormatter
+from formatter import JsonLogFormatter, TextLogFormatter
 from providers.context import ContextProvider, with_log_context
 from providers.extra import ExtraProvider
 from utils import logger_factory, read_stream_log_line
@@ -132,3 +132,20 @@ def test_provider_order_attribute_override():
     assert record["b"] == "override"
     assert record["c"] == 3
     assert record["status"] == "INFO"
+
+
+def test_text_formatter():
+    logger, stream = logger_factory(
+        TextLogFormatter(
+            "{levelname} - {location}, {status} | {message}",
+            style="{",
+            providers=[ExtraProvider()],
+        )
+    )
+
+    logger.info("hello world!", extra={"status": "extra value"})
+
+    stream.seek(0)
+    record = stream.readline()
+    assert record == "INFO - formatter_test-test_text_formatter#146, extra value | hello world!\n"
+    assert stream.readline() == ""
