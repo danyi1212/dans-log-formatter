@@ -8,6 +8,7 @@ from dans_log_formatter.providers.abstract import AbstractProvider
 
 class AbstractContextProvider(AbstractProvider, ABC):
     def __init__(self, context: ContextVar):
+        super().__init__()
         self.context = context
 
     def get_attributes(self, record: LogRecord) -> None | dict[str, Any]:

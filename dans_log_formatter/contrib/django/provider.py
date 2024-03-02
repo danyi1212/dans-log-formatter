@@ -24,9 +24,12 @@ class DjangoRequestProvider(AbstractContextProvider):
             "http.remote_addr": self.extract_remote_addr(request),
         }
         if user := getattr(request, "user", None):
-            result["user.id"] = user.id if user.is_authenticated else 0
-            result["user.name"] = str(user)
-            result["user.email"] = getattr(user, "email", None)
+            try:
+                result["user.id"] = user.id if user.is_authenticated else 0
+                result["user.name"] = str(user)
+                result["user.email"] = getattr(user, "email", None)
+            except Exception as e:  # noqa BLE001
+                self.record_error(f"Failed to extract user attributes: {e}")
 
         return result
 

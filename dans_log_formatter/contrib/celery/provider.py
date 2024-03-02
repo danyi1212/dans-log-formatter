@@ -8,6 +8,7 @@ from providers.abstract import AbstractProvider
 
 class CeleryTaskProvider(AbstractProvider):
     def __init__(self, *, include_args: bool = False):
+        super().__init__()
         self.include_args = include_args
 
     def get_attributes(self, record: LogRecord) -> None | dict[str, Any]:  # noqa ARG002
