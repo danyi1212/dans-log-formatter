@@ -1,3 +1,6 @@
+import logging.config
+from io import StringIO
+
 from formatter import JsonLogFormatter, TextLogFormatter
 from providers.context import ContextProvider, inject_log_context
 from providers.extra import ExtraProvider
@@ -16,7 +19,7 @@ def test_formatter():
     assert isinstance(record["timestamp"], float)
     assert record["status"] == "INFO"
     assert record["message"] == "hello world!"
-    assert record["location"] == "formatter_test-test_formatter#12"
+    assert record["location"] == "formatter_test-test_formatter#15"
     assert record["file"] == __file__
     assert stream.readline() == ""
 
@@ -147,5 +150,44 @@ def test_text_formatter():
 
     stream.seek(0)
     record = stream.readline()
-    assert record == "INFO - formatter_test-test_text_formatter#146, extra value | hello world!\n"
+    assert record == "INFO - formatter_test-test_text_formatter#149, extra value | hello world!\n"
     assert stream.readline() == ""
+
+
+def test_logging_dict_config():
+    stream = StringIO()
+    logging.config.dictConfig(
+        {
+            "version": 1,
+            "formatters": {
+                "json": {
+                    "()": "dans_log_formatter.JsonLogFormatter",
+                    "providers": [
+                        ContextProvider(),
+                    ],
+                }
+            },
+            "handlers": {
+                "console": {
+                    "class": "logging.StreamHandler",
+                    "formatter": "json",
+                    "stream": stream,
+                }
+            },
+            "root": {
+                "handlers": ["console"],
+                "level": "INFO",
+            },
+        }
+    )
+    logger = logging.getLogger("test")
+
+    with inject_log_context({"context": "something"}):
+        logger.info("hello world!")
+
+    record = read_stream_log_line(stream)
+    assert record.keys() == DEFAULT_ATTRIBUTES | {"context"}
+    assert isinstance(record["timestamp"], float)
+    assert record["status"] == "INFO"
+    assert record["message"] == "hello world!"
+    assert record["context"] == "something"
