@@ -29,13 +29,13 @@ class ContextProvider(AbstractContextProvider):
 
 
 @contextmanager
-def with_log_context(**kwargs) -> ContextManager[None]:
+def with_log_context(attributes: dict[str, Any], /) -> ContextManager[None]:
     original_context = _context.get()
     if original_context is None:
-        context = kwargs
+        context = attributes
     else:
         context = original_context.copy()
-        context.update(kwargs)
+        context.update(attributes)
 
     token = _context.set(context)
     try:

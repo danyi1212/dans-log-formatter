@@ -123,7 +123,7 @@ def test_provider_order_attribute_override():
             ]
         )
     )
-    with with_log_context(a=1, b=2, status="value"):
+    with with_log_context({"a": 1, "b": 2, "status": "value"}):
         logger.info("hello world!", extra={"b": "override", "c": 3, "status": "override"})
 
     record = read_stream_log_line(stream)
