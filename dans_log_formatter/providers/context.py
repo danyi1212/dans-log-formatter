@@ -29,7 +29,7 @@ class ContextProvider(AbstractContextProvider):
 
 
 @contextmanager
-def with_log_context(attributes: dict[str, Any], /) -> ContextManager[None]:
+def inject_log_context(attributes: dict[str, Any], /) -> ContextManager[None]:
     original_context = _context.get()
     if original_context is None:
         context = attributes

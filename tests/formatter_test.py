@@ -1,5 +1,5 @@
 from formatter import JsonLogFormatter, TextLogFormatter
-from providers.context import ContextProvider, with_log_context
+from providers.context import ContextProvider, inject_log_context
 from providers.extra import ExtraProvider
 from utils import logger_factory, read_stream_log_line
 
@@ -123,7 +123,7 @@ def test_provider_order_attribute_override():
             ]
         )
     )
-    with with_log_context({"a": 1, "b": 2, "status": "value"}):
+    with inject_log_context({"a": 1, "b": 2, "status": "value"}):
         logger.info("hello world!", extra={"b": "override", "c": 3, "status": "override"})
 
     record = read_stream_log_line(stream)

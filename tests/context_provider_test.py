@@ -1,12 +1,12 @@
 from formatter import JsonLogFormatter
-from providers.context import ContextProvider, with_log_context
+from providers.context import ContextProvider, inject_log_context
 from utils import logger_factory, read_stream_log_line
 
 
 def test_custom_context():
     logger, stream = logger_factory(JsonLogFormatter([ContextProvider()]))
 
-    with with_log_context({"a": 1, "b": 2}):
+    with inject_log_context({"a": 1, "b": 2}):
         logger.info("hello world!")
 
     record = read_stream_log_line(stream)
@@ -17,8 +17,8 @@ def test_custom_context():
 def test_custom_context_nested():
     logger, stream = logger_factory(JsonLogFormatter([ContextProvider()]))
 
-    with with_log_context({"a": 1}):
-        with with_log_context({"b": 2}):
+    with inject_log_context({"a": 1}):
+        with inject_log_context({"b": 2}):
             logger.info("inner")
         logger.info("outer")
     logger.info("outside")
@@ -42,7 +42,7 @@ def test_custom_context_nested():
 def test_custom_context_as_decorator():
     logger, stream = logger_factory(JsonLogFormatter([ContextProvider()]))
 
-    @with_log_context({"a": 1})
+    @inject_log_context({"a": 1})
     def inner():
         logger.info("inner")
 
