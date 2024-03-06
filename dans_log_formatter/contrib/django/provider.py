@@ -43,8 +43,8 @@ class DjangoRequestProvider(AbstractContextProvider):
 
     def extract_remote_addr(self, request: HttpRequest) -> str:
         if x_forwarded_for := request.META.get("HTTP_X_FORWARDED_FOR"):
-            return x_forwarded_for
+            return str(x_forwarded_for)
         elif remote_addr := request.META.get("REMOTE_ADDR"):
-            return remote_addr
+            return str(remote_addr)
         else:
             return "unknown"

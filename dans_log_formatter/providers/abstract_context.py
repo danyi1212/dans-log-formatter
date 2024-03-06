@@ -14,7 +14,7 @@ class AbstractContextProvider(AbstractProvider, ABC):
     def get_attributes(self, record: LogRecord) -> None | dict[str, Any]:
         value = self.context.get()
         if value is None:
-            return
+            return None
 
         return self.get_context_attributes(record, value)
 

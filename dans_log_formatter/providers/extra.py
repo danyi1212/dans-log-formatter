@@ -47,5 +47,4 @@ class ExtraProvider(AbstractProvider):
 
     def get_attributes(self, record: LogRecord) -> None | dict[str, Any]:
         extra = self.extract_extra(record)
-        if extra:
-            return extra
+        return extra if extra else None

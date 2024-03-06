@@ -1,7 +1,7 @@
 from contextlib import contextmanager
 from contextvars import ContextVar
 from logging import LogRecord
-from typing import Any, ContextManager
+from typing import Any
 
 from providers.abstract_context import AbstractContextProvider
 
@@ -29,7 +29,7 @@ class ContextProvider(AbstractContextProvider):
 
 
 @contextmanager
-def inject_log_context(attributes: dict[str, Any], /, *, override: bool = False) -> ContextManager[None]:
+def inject_log_context(attributes: dict[str, Any], /, *, override: bool = False):
     original_context = _context.get()
     if original_context is None:
         context = attributes

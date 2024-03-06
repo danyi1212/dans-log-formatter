@@ -30,8 +30,8 @@ class FastAPIRequestProvider(AbstractContextProvider):
 
     def extract_remote_addr(self, request: Request) -> str:
         if forwarded := request.headers.get("x-forwarded-for"):
-            return forwarded
+            return str(forwarded)
         elif request.client is not None:
-            return request.client.host
+            return str(request.client.host)
         else:
             return "unknown"

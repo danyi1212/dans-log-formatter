@@ -13,7 +13,7 @@ ujson = { version = "^5.9.0", optional = true }
 orjson = { version = "^3.9.15", optional = true }
 fastapi = { version = "^0.110.0", optional = true }
 flask = { version = "^3.0.2", optional = true }
-django = { version = "^5.0.2", optional = true }
+django = { version = "^5.0.3", optional = true }
 celery = { version = "^5.3.6", optional = true }
 
 [tool.poetry.extras]
@@ -29,6 +29,8 @@ pytest = "^8.0.2"
 ruff = "^0.3.0"
 pre-commit = "^3.6.2"
 httpx = "^0.27.0"
+mypy = "^1.8.0"
+types-ujson = "^5.9.0.0"
 
 [build-system]
 requires = ["poetry-core"]
@@ -62,3 +64,23 @@ select = [
     "PD", # pandas
     "RUF", # ruff rules
 ]
+
+[tool.mypy]
+python_version = "3.12"
+check_untyped_defs = true
+warn_untyped_defs = true
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_unreachable = true
+
+[[tool.mypy.overrides]]
+module = "dans_log_formatter"
+warn_return_any = true
+disallow_untyped_defs = true
+disallow_untyped_calls = true
+disallow_untyped_decorators = true
+
+
+[[tool.mypy.overrides]]
+module = "tests"
