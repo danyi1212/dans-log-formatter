@@ -113,9 +113,12 @@ class TextLogFormatter(Formatter):
         self._formatter_errors.append(FormatterError(message, sys.exc_info()))
 
     def _get_formatter_errors(self) -> str:
-        return "\n\n".join(
-            f"{error.message}\n{self.formatException(error.exc_info)}" if error.exc_info else error.message
-            for error in self._formatter_errors
+        return self.truncate_string(
+            "\n\n".join(
+                f"{error.message}\n{self.formatException(error.exc_info)}" if error.exc_info else error.message
+                for error in self._formatter_errors
+            ),
+            self.stack_size_limit,
         )
 
 

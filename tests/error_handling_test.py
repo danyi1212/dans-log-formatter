@@ -1,6 +1,6 @@
 from logging import LogRecord
 
-from formatter import JsonLogFormatter
+from formatter import JsonLogFormatter, DEFAULT_STACK_SIZE_LIMIT
 from providers.abstract import AbstractProvider
 from utils import logger_factory, read_stream_log_line
 
@@ -14,6 +14,11 @@ class InternalErrorProvider(AbstractProvider):
     def get_attributes(self, record: LogRecord):  # noqa ARG002
         self.record_error("Something went wrong, but it's not an exception")
         return {"something": 123}
+
+
+class LongExceptionProvider(AbstractProvider):
+    def get_attributes(self, record: LogRecord):  # noqa ARG002
+        raise ValueError("Something went wrong" + "*" * DEFAULT_STACK_SIZE_LIMIT)
 
 
 def test_provider_exception():
@@ -39,3 +44,18 @@ def test_provider_internal_error():
     assert record["message"] == "hello world!"
     assert record["status"] == "INFO"
     assert record["something"] == 123
+
+
+def test_provider_truncate_error_message():
+    formatter = JsonLogFormatter([LongExceptionProvider()])
+    logger, stream = logger_factory(formatter)
+
+    logger.info("hello world!")
+
+    record = read_stream_log_line(stream)
+    assert len(record["formatter_errors"]) == formatter.stack_size_limit
+    assert record["formatter_errors"].startswith("Provider index 0 (LongExceptionProvider) raised an exception: ")
+    assert "Something went wrong" in record["formatter_errors"]
+    assert record["formatter_errors"].endswith("...[TRUNCATED]")
+    assert record["message"] == "hello world!"
+    assert record["status"] == "INFO"
