@@ -1,3 +1,5 @@
+import pytest
+
 from formatter import JsonLogFormatter
 from providers.context import ContextProvider, inject_log_context
 from utils import logger_factory, read_stream_log_line
@@ -56,3 +58,23 @@ def test_custom_context_as_decorator():
     record2 = read_stream_log_line(stream, seek=False)
     assert record2["message"] == "outer"
     assert "a" not in record2
+
+
+def test_custom_context_override():
+    logger, stream = logger_factory(JsonLogFormatter([ContextProvider()]))
+
+    with pytest.raises(AttributeError, match="a"):  # noqa SIM117
+        with inject_log_context({"a": 1}):
+            with inject_log_context({"a": 2}):
+                logger.info("hello world!")
+
+
+def test_custom_context_override_enable():
+    logger, stream = logger_factory(JsonLogFormatter([ContextProvider()]))
+
+    with inject_log_context({"a": 1}, override=True):  # noqa SIM117
+        with inject_log_context({"a": 2}, override=True):
+            logger.info("hello world!")
+
+    record = read_stream_log_line(stream)
+    assert record["a"] == 2

@@ -29,12 +29,15 @@ class ContextProvider(AbstractContextProvider):
 
 
 @contextmanager
-def inject_log_context(attributes: dict[str, Any], /) -> ContextManager[None]:
+def inject_log_context(attributes: dict[str, Any], /, *, override: bool = False) -> ContextManager[None]:
     original_context = _context.get()
     if original_context is None:
         context = attributes
     else:
         context = original_context.copy()
+        if not override and (existing_attributes := set(original_context).intersection(set(attributes))):
+            raise AttributeError(f"Attributes {existing_attributes} already exist in the context")
+
         context.update(attributes)
 
     token = _context.set(context)
