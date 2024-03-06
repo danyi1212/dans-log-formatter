@@ -51,7 +51,7 @@ class TextLogFormatter(Formatter):
                 result.update(provider_data)
 
         result["timestamp"] = self.format_timestamp(record)
-        result["status"] = record.levelname
+        result["status"] = self.format_status(record)
         result["message"] = self.format_message(record)
         result["location"] = self.format_location(record)
         result["file"] = self.format_file(record)
@@ -69,6 +69,9 @@ class TextLogFormatter(Formatter):
 
     def format_timestamp(self, record: LogRecord):
         return self.formatTime(record)
+
+    def format_status(self, record: LogRecord) -> str:
+        return record.levelname
 
     def format_message(self, record: LogRecord) -> str:
         return self.truncate_string(record.getMessage(), self.message_size_limit)
