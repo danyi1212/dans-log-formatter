@@ -57,10 +57,10 @@ class TextLogFormatter(Formatter):
         result["file"] = self.format_file(record)
 
         if record.exc_info is not None:
-            result["error"] = self.format_exception(record)
+            result["error"] = self.format_error(record)
 
         if record.stack_info is not None:
-            result["stack_info"] = self.format_stack(record)
+            result["stack_info"] = self.format_stack_info(record)
 
         if self._formatter_errors:
             result["formatter_errors"] = self._get_formatter_errors()
@@ -74,25 +74,27 @@ class TextLogFormatter(Formatter):
         return record.levelname
 
     def format_message(self, record: LogRecord) -> str:
-        return self.truncate_string(record.getMessage(), self.message_size_limit)
+        return self.truncate_string(record.getMessage(), self.message_size_limit, "message")
 
-    def format_exception(self, record: LogRecord) -> str:
+    def format_error(self, record: LogRecord) -> str:
         if record.exc_info is None:
             return ""
         exception = self.formatException(record.exc_info)
-        return self.truncate_string(exception, self.stack_size_limit)
+        return self.truncate_string(exception, self.stack_size_limit, "error")
 
-    def format_stack(self, record: LogRecord) -> str:
+    def format_stack_info(self, record: LogRecord) -> str:
         if record.stack_info is None:
             return ""
         stack = self.formatStack(record.stack_info)
-        return self.truncate_string(stack, self.stack_size_limit)
+        return self.truncate_string(stack, self.stack_size_limit, "stack_info")
 
-    def truncate_string(self, string: str, limit: int | None) -> str:
-        if limit is not None and len(string) > limit:
-            return string[: limit - 14] + "...[TRUNCATED]"
+    def truncate_string(self, value: str, limit: int | None, attribute_name: str) -> str:
+        length = len(value)
+        if limit is not None and length > limit:
+            self.record_error(f"Attribute '{attribute_name}' value is too long: {length:,} (limit: {limit:,})")
+            return value[: limit - 14] + "...[TRUNCATED]"
         else:
-            return string
+            return value
 
     def format_location(self, record: LogRecord):
         return f"{record.module}-{record.funcName}#{record.lineno}"
@@ -126,6 +128,7 @@ class TextLogFormatter(Formatter):
                 for error in self._formatter_errors
             ),
             self.stack_size_limit,
+            "formatter_errors",
         )
 
 

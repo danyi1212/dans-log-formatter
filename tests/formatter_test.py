@@ -55,6 +55,7 @@ def test_truncate_message():
     assert len(record["message"]) == formatter.message_size_limit
     assert record["message"].startswith("hello world")
     assert record["message"].endswith("...[TRUNCATED]")
+    assert "'message' value is too long" in record["formatter_errors"]
 
 
 def test_disable_truncate_message():
@@ -66,6 +67,7 @@ def test_disable_truncate_message():
     record = read_stream_log_line(stream)
     assert len(record["message"]) == 100_000
     assert not record["message"].endswith("...[TRUNCATED]")
+    assert "formatter_errors" not in record
 
 
 def test_not_truncate_message():
@@ -77,6 +79,7 @@ def test_not_truncate_message():
     record = read_stream_log_line(stream)
     assert len(record["message"]) == formatter.message_size_limit
     assert not record["message"].endswith("...[TRUNCATED]")
+    assert "formatter_errors" not in record
 
 
 def test_truncate_stack_info():
@@ -90,6 +93,7 @@ def test_truncate_stack_info():
     assert len(record["stack_info"]) == formatter.stack_size_limit
     assert record["stack_info"].startswith("hello world")
     assert record["stack_info"].endswith("...[TRUNCATED]")
+    assert "'stack_info' value is too long" in record["formatter_errors"]
 
 
 def test_truncate_exception():
@@ -106,6 +110,7 @@ def test_truncate_exception():
     assert record["error"].startswith("Traceback (most recent call last):")
     assert "ValueError: hello world" in record["error"]
     assert record["error"].endswith("...[TRUNCATED]")
+    assert "'error' value is too long" in record["formatter_errors"]
 
 
 def test_provider_cannot_override_attributes():
@@ -150,7 +155,7 @@ def test_text_formatter():
 
     stream.seek(0)
     record = stream.readline()
-    assert record == "INFO - formatter_test-test_text_formatter#149, extra value | hello world!\n"
+    assert record == "INFO - formatter_test-test_text_formatter#154, extra value | hello world!\n"
     assert stream.readline() == ""
 
 
