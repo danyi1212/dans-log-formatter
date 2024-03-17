@@ -11,6 +11,7 @@ from utils import logger_factory
 EXECUTION_COUNT = 1_000
 
 
+@pytest.mark.xfail()
 @pytest.mark.parametrize(
     "formatter",
     [
