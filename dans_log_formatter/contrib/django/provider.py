@@ -1,20 +1,20 @@
 from contextvars import ContextVar
 from logging import LogRecord
-from typing import Any
+from typing import Any, Optional
 
 from django.http import HttpRequest
 from django.urls import resolve, Resolver404
 
-from providers.abstract_context import AbstractContextProvider
+from dans_log_formatter.providers.abstract_context import AbstractContextProvider
 
-django_request_context: ContextVar[HttpRequest | None] = ContextVar("django_log_context", default=None)
+django_request_context: ContextVar[Optional[HttpRequest]] = ContextVar("django_log_context", default=None)
 
 
 class DjangoRequestProvider(AbstractContextProvider):
     def __init__(self):
         super().__init__(django_request_context)
 
-    def get_context_attributes(self, record: LogRecord, request: HttpRequest) -> None | dict[str, Any]:  # noqa ARG002
+    def get_context_attributes(self, record: LogRecord, request: HttpRequest) -> Optional[dict[str, Any]]:  # noqa ARG002
         result = {
             "resource": self.get_resource(request),
             "http.url": request.build_absolute_uri(),

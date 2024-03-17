@@ -1,9 +1,9 @@
 from logging import LogRecord
-from typing import Any
+from typing import Any, Optional
 
 from celery import current_task
 
-from providers.abstract import AbstractProvider
+from dans_log_formatter.providers.abstract import AbstractProvider
 
 
 class CeleryTaskProvider(AbstractProvider):
@@ -11,7 +11,7 @@ class CeleryTaskProvider(AbstractProvider):
         super().__init__()
         self.include_args = include_args
 
-    def get_attributes(self, record: LogRecord) -> None | dict[str, Any]:  # noqa ARG002
+    def get_attributes(self, record: LogRecord) -> Optional[dict[str, Any]]:  # noqa ARG002
         if current_task is None:
             return None
 

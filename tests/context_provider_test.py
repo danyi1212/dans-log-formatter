@@ -1,8 +1,8 @@
 import pytest
 
-from formatter import JsonLogFormatter
-from providers.context import ContextProvider, inject_log_context
-from utils import logger_factory, read_stream_log_line
+from dans_log_formatter.formatter import JsonLogFormatter
+from dans_log_formatter.providers.context import ContextProvider, inject_log_context
+from tests.utils import logger_factory, read_stream_log_line
 
 
 def test_custom_context():

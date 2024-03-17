@@ -3,9 +3,9 @@ import socket
 from celery import Celery
 from celery.result import EagerResult
 
-from contrib.celery.provider import CeleryTaskProvider
-from formatter import JsonLogFormatter
-from utils import logger_factory, read_stream_log_line
+from dans_log_formatter.contrib.celery.provider import CeleryTaskProvider
+from dans_log_formatter.formatter import JsonLogFormatter
+from tests.utils import logger_factory, read_stream_log_line
 
 app = Celery("test_app", broker="memory://", backend="cache+memory://")
 app.conf.task_always_eager = True

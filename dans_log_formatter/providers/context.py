@@ -1,11 +1,11 @@
 from contextlib import contextmanager
 from contextvars import ContextVar
 from logging import LogRecord
-from typing import Any
+from typing import Any, Optional
 
-from providers.abstract_context import AbstractContextProvider
+from dans_log_formatter.providers.abstract_context import AbstractContextProvider
 
-_context: ContextVar[dict[str, Any] | None] = ContextVar("custom_log_context", default=None)
+_context: ContextVar[Optional[dict[str, Any]]] = ContextVar("custom_log_context", default=None)
 
 
 class ContextProvider(AbstractContextProvider):

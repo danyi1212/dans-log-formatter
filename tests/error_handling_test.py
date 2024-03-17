@@ -1,8 +1,8 @@
 from logging import LogRecord
 
-from formatter import JsonLogFormatter, DEFAULT_STACK_SIZE_LIMIT
-from providers.abstract import AbstractProvider
-from utils import logger_factory, read_stream_log_line
+from dans_log_formatter.formatter import JsonLogFormatter, DEFAULT_STACK_SIZE_LIMIT
+from dans_log_formatter.providers.abstract import AbstractProvider
+from tests.utils import logger_factory, read_stream_log_line
 
 
 class ExceptionProvider(AbstractProvider):

@@ -2,7 +2,7 @@ from starlette.middleware.base import BaseHTTPMiddleware, RequestResponseEndpoin
 from starlette.requests import Request
 from starlette.responses import Response
 
-from contrib.fastapi.provider import fastapi_request_context
+from dans_log_formatter.contrib.fastapi.provider import fastapi_request_context
 
 
 class LogContextMiddleware(BaseHTTPMiddleware):

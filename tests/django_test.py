@@ -4,9 +4,9 @@ from django.http import HttpResponse
 from django.test import Client
 from django.urls import path
 
-from contrib.django.provider import DjangoRequestProvider
-from formatter import JsonLogFormatter
-from utils import logger_factory, read_stream_log_line
+from dans_log_formatter.contrib.django.provider import DjangoRequestProvider
+from dans_log_formatter.formatter import JsonLogFormatter
+from tests.utils import logger_factory, read_stream_log_line
 
 settings.configure(
     DEBUG=True,

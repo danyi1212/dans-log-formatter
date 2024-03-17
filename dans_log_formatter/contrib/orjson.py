@@ -2,7 +2,7 @@ from logging import LogRecord
 
 import orjson
 
-from formatter import JsonLogFormatter
+from dans_log_formatter.formatter import JsonLogFormatter
 
 
 class OrJsonLogFormatter(JsonLogFormatter):

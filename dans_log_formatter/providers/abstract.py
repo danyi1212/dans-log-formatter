@@ -1,9 +1,9 @@
 import sys
 from abc import ABC, abstractmethod
 from logging import LogRecord
-from typing import Any
+from typing import Any, Optional
 
-from formatter_error import FormatterError
+from dans_log_formatter.formatter_error import FormatterError
 
 
 class AbstractProvider(ABC):
@@ -11,7 +11,7 @@ class AbstractProvider(ABC):
         self._formatter_errors: list[FormatterError] = []
 
     @abstractmethod
-    def get_attributes(self, record: LogRecord) -> None | dict[str, Any]:
+    def get_attributes(self, record: LogRecord) -> Optional[dict[str, Any]]:
         raise NotImplementedError()
 
     def record_error(self, message: str) -> None:
