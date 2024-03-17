@@ -1,8 +1,8 @@
 from flask import Flask
 
-from contrib.flask.provider import FlaskRequestProvider
-from formatter import JsonLogFormatter
-from utils import logger_factory, read_stream_log_line
+from dans_log_formatter.contrib.flask.provider import FlaskRequestProvider
+from dans_log_formatter.formatter import JsonLogFormatter
+from tests.utils import logger_factory, read_stream_log_line
 
 
 def test_flask_integration():

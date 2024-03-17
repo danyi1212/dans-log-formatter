@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from contrib.fastapi.middleware import LogContextMiddleware
-from contrib.fastapi.provider import FastAPIRequestProvider
-from formatter import JsonLogFormatter
-from utils import logger_factory, read_stream_log_line
+from dans_log_formatter.contrib.fastapi.middleware import LogContextMiddleware
+from dans_log_formatter.contrib.fastapi.provider import FastAPIRequestProvider
+from dans_log_formatter.formatter import JsonLogFormatter
+from tests.utils import logger_factory, read_stream_log_line
 
 
 def test_fastapi_integration():

@@ -2,9 +2,9 @@ import asyncio
 import os
 import threading
 
-from formatter import JsonLogFormatter
-from providers.runtime import RuntimeProvider
-from utils import logger_factory, read_stream_log_line
+from dans_log_formatter.formatter import JsonLogFormatter
+from dans_log_formatter.providers.runtime import RuntimeProvider
+from tests.utils import logger_factory, read_stream_log_line
 
 
 def test_runtime_provider():

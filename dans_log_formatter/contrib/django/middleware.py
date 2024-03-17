@@ -1,7 +1,7 @@
 from asgiref.sync import iscoroutinefunction, markcoroutinefunction
 from django.http import HttpRequest
 
-from contrib.django.provider import django_request_context
+from dans_log_formatter.contrib.django.provider import django_request_context
 
 
 class LogContextMiddleware:

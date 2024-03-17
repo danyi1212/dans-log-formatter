@@ -1,10 +1,10 @@
 import json
 import sys
 from logging import Formatter, LogRecord
-from typing import Literal, Mapping, Any
+from typing import Literal, Optional
 
 from dans_log_formatter.providers.abstract import AbstractProvider
-from formatter_error import FormatterError
+from dans_log_formatter.formatter_error import FormatterError
 
 DEFAULT_MESSAGE_SIZE_LIMIT = 64 * 1024
 DEFAULT_STACK_SIZE_LIMIT = 128 * 1024
@@ -14,17 +14,16 @@ DEFAULT_STACK_SIZE_LIMIT = 128 * 1024
 class TextLogFormatter(Formatter):
     def __init__(
         self,
-        fmt: str | None = None,
-        datefmt: str | None = None,
+        fmt: Optional[str] = None,
+        datefmt: Optional[str] = None,
         style: Literal["%", "{", "$"] = "%",
         validate: bool = True,  # noqa FBT001, FBT002
-        providers: list[AbstractProvider] | None = None,
+        providers: Optional[list[AbstractProvider]] = None,
         *,
-        defaults: Mapping[str, Any] | None = None,
-        message_size_limit: int | None = DEFAULT_MESSAGE_SIZE_LIMIT,
-        stack_size_limit: int | None = DEFAULT_STACK_SIZE_LIMIT,
+        message_size_limit: Optional[int] = DEFAULT_MESSAGE_SIZE_LIMIT,
+        stack_size_limit: Optional[int] = DEFAULT_STACK_SIZE_LIMIT,
     ):
-        super().__init__(fmt, datefmt, style, validate, defaults=defaults)
+        super().__init__(fmt, datefmt, style, validate)  # "defaults" argument is added in Python 3.10
         self.providers = providers or []
         self.message_size_limit = message_size_limit
         self.stack_size_limit = stack_size_limit
@@ -88,7 +87,7 @@ class TextLogFormatter(Formatter):
         stack = self.formatStack(record.stack_info)
         return self.truncate_string(stack, self.stack_size_limit, "stack_info")
 
-    def truncate_string(self, value: str, limit: int | None, attribute_name: str) -> str:
+    def truncate_string(self, value: str, limit: Optional[int], attribute_name: str) -> str:
         length = len(value)
         if limit is not None and length > limit:
             self.record_error(f"Attribute '{attribute_name}' value is too long: {length:,} (limit: {limit:,})")
@@ -102,7 +101,7 @@ class TextLogFormatter(Formatter):
     def format_file(self, record: LogRecord):
         return record.pathname
 
-    def get_provider_attributes(self, index: int, provider: AbstractProvider, record: LogRecord) -> dict | None:
+    def get_provider_attributes(self, index: int, provider: AbstractProvider, record: LogRecord) -> Optional[dict]:
         try:
             provider_data = provider.get_attributes(record)
         except Exception as e:  # noqa BLE001
@@ -135,10 +134,10 @@ class TextLogFormatter(Formatter):
 class JsonLogFormatter(TextLogFormatter):
     def __init__(
         self,
-        providers: list[AbstractProvider] | None = None,
+        providers: Optional[list[AbstractProvider]] = None,
         *,
-        message_size_limit: int | None = DEFAULT_MESSAGE_SIZE_LIMIT,
-        stack_size_limit: int | None = DEFAULT_STACK_SIZE_LIMIT,
+        message_size_limit: Optional[int] = DEFAULT_MESSAGE_SIZE_LIMIT,
+        stack_size_limit: Optional[int] = DEFAULT_STACK_SIZE_LIMIT,
     ):
         super().__init__(providers=providers, message_size_limit=message_size_limit, stack_size_limit=stack_size_limit)
 

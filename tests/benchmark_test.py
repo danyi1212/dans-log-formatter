@@ -3,10 +3,10 @@ import timeit
 
 import pytest
 
-from contrib.orjson import OrJsonLogFormatter
-from contrib.ujson import UJsonLogFormatter
-from formatter import JsonLogFormatter
-from utils import logger_factory
+from dans_log_formatter.contrib.orjson import OrJsonLogFormatter
+from dans_log_formatter.contrib.ujson import UJsonLogFormatter
+from dans_log_formatter.formatter import JsonLogFormatter
+from tests.utils import logger_factory
 
 EXECUTION_COUNT = 1_000
 

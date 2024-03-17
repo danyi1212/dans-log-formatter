@@ -1,7 +1,7 @@
 from logging import LogRecord
-from typing import Any, ClassVar
+from typing import Any, ClassVar, Optional
 
-from providers.abstract import AbstractProvider
+from dans_log_formatter.providers.abstract import AbstractProvider
 
 
 class ExtraProvider(AbstractProvider):
@@ -45,6 +45,6 @@ class ExtraProvider(AbstractProvider):
             if attr_name not in self.builtin_attrs
         }
 
-    def get_attributes(self, record: LogRecord) -> None | dict[str, Any]:
+    def get_attributes(self, record: LogRecord) -> Optional[dict[str, Any]]:
         extra = self.extract_extra(record)
         return extra if extra else None

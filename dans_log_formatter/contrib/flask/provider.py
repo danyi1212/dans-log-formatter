@@ -1,13 +1,13 @@
 from logging import LogRecord
-from typing import Any
+from typing import Any, Optional
 
 from flask import has_request_context, request
 
-from providers.abstract import AbstractProvider
+from dans_log_formatter.providers.abstract import AbstractProvider
 
 
 class FlaskRequestProvider(AbstractProvider):
-    def get_attributes(self, record: LogRecord) -> None | dict[str, Any]:  # noqa ARG002
+    def get_attributes(self, record: LogRecord) -> Optional[dict[str, Any]]:  # noqa ARG002
         if not has_request_context():
             return None
 

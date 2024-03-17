@@ -1,12 +1,13 @@
 from contextvars import ContextVar
 from logging import LogRecord
+from typing import Optional
 
 from fastapi.routing import APIRoute
 from starlette.requests import Request
 
-from providers.abstract_context import AbstractContextProvider
+from dans_log_formatter.providers.abstract_context import AbstractContextProvider
 
-fastapi_request_context: ContextVar[Request | None] = ContextVar("fastapi_log_context", default=None)
+fastapi_request_context: ContextVar[Optional[Request]] = ContextVar("fastapi_log_context", default=None)
 
 
 class FastAPIRequestProvider(AbstractContextProvider):

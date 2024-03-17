@@ -1,10 +1,10 @@
 import logging.config
 from io import StringIO
 
-from formatter import JsonLogFormatter, TextLogFormatter
-from providers.context import ContextProvider, inject_log_context
-from providers.extra import ExtraProvider
-from utils import logger_factory, read_stream_log_line
+from dans_log_formatter.formatter import JsonLogFormatter, TextLogFormatter
+from dans_log_formatter.providers.context import ContextProvider, inject_log_context
+from dans_log_formatter.providers.extra import ExtraProvider
+from tests.utils import logger_factory, read_stream_log_line
 
 DEFAULT_ATTRIBUTES = {"timestamp", "status", "message", "location", "file"}
 
@@ -47,6 +47,8 @@ def test_formatter_with_stack_info():
 
 def test_truncate_message():
     formatter = JsonLogFormatter()
+    assert formatter.message_size_limit is not None
+
     logger, stream = logger_factory(formatter)
 
     logger.info("hello world" + "*" * formatter.message_size_limit)
@@ -72,6 +74,7 @@ def test_disable_truncate_message():
 
 def test_not_truncate_message():
     formatter = JsonLogFormatter(message_size_limit=100)
+    assert formatter.message_size_limit is not None
     logger, stream = logger_factory(formatter)
 
     logger.info("*" * formatter.message_size_limit)
@@ -84,7 +87,7 @@ def test_not_truncate_message():
 
 def test_truncate_stack_info():
     formatter = JsonLogFormatter(stack_size_limit=100)
-    formatter.formatStack = lambda _: "hello world" + "*" * formatter.stack_size_limit
+    formatter.formatStack = lambda _: "hello world" + "*" * formatter.stack_size_limit  # type: ignore
     logger, stream = logger_factory(formatter)
 
     logger.info("hello world!", stack_info=True)
@@ -98,6 +101,7 @@ def test_truncate_stack_info():
 
 def test_truncate_exception():
     formatter = JsonLogFormatter(stack_size_limit=300)
+    assert formatter.stack_size_limit is not None
     logger, stream = logger_factory(formatter)
 
     try:
@@ -155,7 +159,7 @@ def test_text_formatter():
 
     stream.seek(0)
     record = stream.readline()
-    assert record == "INFO - formatter_test-test_text_formatter#154, extra value | hello world!\n"
+    assert record == "INFO - formatter_test-test_text_formatter#158, extra value | hello world!\n"
     assert stream.readline() == ""
 
 

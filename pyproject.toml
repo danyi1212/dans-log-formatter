@@ -8,13 +8,13 @@ include = ["dans_log_formatter/"]
 exclude = ["tests/", "*_test.py"]
 
 [tool.poetry.dependencies]
-python = "^3.12"
-ujson = { version = "^5.9.0", optional = true }
-orjson = { version = "^3.9.15", optional = true }
-fastapi = { version = "^0.110.0", optional = true }
-flask = { version = "^3.0.2", optional = true }
-django = { version = "^5.0.3", optional = true }
-celery = { version = "^5.3.6", optional = true }
+python = "^3.9"
+ujson = { version = "*", optional = true }
+orjson = { version = "*", optional = true }
+fastapi = { version = "*", optional = true }
+flask = { version = "*", optional = true }
+django = { version = "*", optional = true }
+celery = { version = "*", optional = true }
 
 [tool.poetry.extras]
 ujson = ["ujson"]
@@ -71,9 +71,9 @@ select = [
 ]
 
 [tool.mypy]
-python_version = "3.12"
+python_version = "3.9"
+namespace_packages = true
 check_untyped_defs = true
-warn_untyped_defs = true
 warn_unused_configs = true
 warn_redundant_casts = true
 warn_unused_ignores = true
