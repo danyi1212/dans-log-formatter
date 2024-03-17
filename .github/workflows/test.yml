@@ -60,7 +60,7 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Install optional dependencies
-        run: poetry add ujson@${{ matrix.ujson-version }} "orjson@${{ matrix.orjson-version }} "fastapi@${{ matrix.fastapi-version }} "flask@${{ matrix.flask-version }} "django@${{ matrix.django-version }} "celery@${{ matrix.celery-version }} --no-interaction
+        run: poetry add ujson@${{ matrix.ujson-version }} orjson@${{ matrix.orjson-version }} fastapi@${{ matrix.fastapi-version }} flask@${{ matrix.flask-version }} django@${{ matrix.django-version }} celery@${{ matrix.celery-version }} --no-interaction
 
       - name: Install library
         run: poetry install --no-interaction
