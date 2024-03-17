@@ -1,4 +1,24 @@
-# Dan's Log Formatter
+<h1 align="center">Dan's Log Formatter</h1>
+<p align="center">
+  <em>Extensible, reusable, awesome log formatter for Python</em>
+</p>
+<p align="center">
+<a href="https://github.com/danyi1212/dans-log-formatter/actions/workflows/test.yml" target="_blank">
+  <img src="https://github.com/danyi1212/dans-log-formatter/actions/workflows/test.yml/badge.svg" alt="Test">
+</a>
+<a href="https://codecov.io/gh/danyi1212/dans-log-formatter" > 
+ <img src="https://codecov.io/gh/danyi1212/dans-log-formatter/graph/badge.svg?token=0NR3NUEFDV" alt="Coverage" /> 
+</a>
+<a href="https://pypi.org/project/dans-log-formatter" target="_blank">
+  <img src="https://img.shields.io/pypi/v/dans-log-formatter?color=%2334D058&label=version" alt="Package version">
+</a>
+<a href="https://pypi.org/project/dans-log-formatter" target="_blank">
+  <img src="https://img.shields.io/pypi/pyversions/dans-log-formatter.svg?color=%2334D058" alt="Supported Python versions">
+</a>
+</p>
+
+---
+
 You too are tiered of rewriting log handling for each project?
 Here's my simple, extensible formatter, designed so we never have to write it again.
 
