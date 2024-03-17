@@ -2,7 +2,7 @@
 You too are tiered of rewriting log handling for each project?
 Here's my simple, extensible formatter, designed so we never have to write it again.
 
-This log formatter ships with commonly used features, like JSON serialization, attribute injection, error handling and more. 
+This log formatter ships with commonly used features, like JSON serialization, attribute injection, error handling and more.
 
 Adding log attributes beside the message is made simple, like contextual data, runtime information, request information, basicly whatever you may need.
 Those attribute providers can easily be shared between your services, streamlining the development experince between your services.
