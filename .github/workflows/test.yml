@@ -19,6 +19,12 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [ "3.9", "3.10", "3.11", "3.12" ]
+        ujson-version: ["5.9"]
+        orjson-version: ["3.9"]
+        fastapi-version: ["0.110"]
+        flask-version: ["3.0"]
+        django-version: ["5.0"]
+        celery-version: ["5.3"]
 
     steps:
       - uses: actions/checkout@v4
@@ -44,6 +50,9 @@ jobs:
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root
+
+      - name: Install optional dependencies
+        run: poetry add "ujson~=${{ matrix.ujson-version }}" "orjson~=${{ matrix.orjson-version }}" "fastapi~=${{ matrix.fastapi-version }}" "flask~=${{ matrix.flask-version }}" "django~=${{ matrix.django-version }}" "celery~=${{ matrix.celery-version }}" --no-interaction
 
       - name: Install library
         run: poetry install --no-interaction
