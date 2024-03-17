@@ -19,12 +19,12 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [ "3.9", "3.10", "3.11", "3.12" ]
-        ujson-version: ["latest"]
-        orjson-version: ["latest"]
-        fastapi-version: ["latest"]
-        flask-version: ["latest"]
-        django-version: ["4.2"]
-        celery-version: ["latest"]
+        ujson-version: [ "latest" ]
+        orjson-version: [ "latest" ]
+        fastapi-version: [ "latest" ]
+        flask-version: [ "latest" ]
+        django-version: [ "4.2" ]
+        celery-version: [ "latest" ]
 
     steps:
       - uses: actions/checkout@v4
@@ -79,3 +79,22 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           slug: danyi1212/dans-log-formatter
+
+  pre-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+
+      - name: Publish
+        run: |
+          poetry config pypi-token.testpypi "${{ secrets.TEST_PYPI_KEY }}"
+          poetry publish --build -r testpypi
