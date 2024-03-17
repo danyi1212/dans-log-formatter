@@ -19,6 +19,12 @@ jobs:
       fail-fast: false
       matrix:
         python-version: [ "3.9", "3.10", "3.11", "3.12" ]
+        ujson-version: ["latest"]
+        orjson-version: ["latest"]
+        fastapi-version: ["latest"]
+        flask-version: ["latest"]
+        django-version: ["latest"]
+        celery-version: ["latest"]
 
     steps:
       - uses: actions/checkout@v4
@@ -54,7 +60,7 @@ jobs:
         run: poetry install --no-interaction --no-root
 
       - name: Install optional dependencies
-        run: poetry add ujson orjson fastapi flask django celery --no-interaction
+        run: poetry add ujson@${{ matrix.ujson-version }} "orjson@${{ matrix.orjson-version }} "fastapi@${{ matrix.fastapi-version }} "flask@${{ matrix.flask-version }} "django@${{ matrix.django-version }} "celery@${{ matrix.celery-version }} --no-interaction
 
       - name: Install library
         run: poetry install --no-interaction
