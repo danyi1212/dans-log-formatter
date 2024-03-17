@@ -40,6 +40,10 @@ build-backend = "poetry.core.masonry.api"
 pythonpath = ["tests", "dans_log_formatter"]
 testpaths = ["tests"]
 
+[virtualenvs]
+create = true
+in-project = true
+
 [tool.ruff]
 line-length = 120
 src = ["dans_log_formatter", "tests"]
