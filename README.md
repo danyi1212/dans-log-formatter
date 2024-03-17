@@ -1,6 +1,11 @@
 # Dan's Log Formatter
-Every project needs logging, but why rewrite it each time?
-Here's my simple, extensible formatter, designed so I never have to.
+You too are tiered of rewriting log handling for each project?
+Here's my simple, extensible formatter, designed so we never have to write it again.
+
+This log formatter ships with commonly used features, like JSON serialization, attribute injection, error handling and more. 
+
+Adding log attributes beside the message is made simple, like contextual data, runtime information, request information, basicly whatever you may need.
+Those attribute providers can easily be shared between your services, streamlining the development experince between your services.
 
 ## Features
 
@@ -9,17 +14,17 @@ Here's my simple, extensible formatter, designed so I never have to.
 - **Contextual** - Automatically adds useful context to logs
 - **Out-of-the-box** - Include common providers for HTTP data, runtime, and more
 
-My formatter and provider's default attributes are mostly compatible
+My log record's default attributes are mostly compatible
 with [DataDog's Standard Attributes](https://docs.datadoghq.com/logs/log_configuration/attributes_naming_convention/#standard-attributes).
 
 #### Integrations
 
 - **Django** - Automatically adds request context
-- **FastAPI** - Automatically adds request context (including Starlette)
+- **FastAPI** - Automatically adds request context (including Starlette support)
 - **Flask** - Automatically adds request context
 - **Celery** - Automatically adds task context
-- **orjson** - Automatically adds JSON serialization context
-- **ujson** - Automatically adds JSON serialization context
+- **orjson** - Uses orSON for serialization
+- **ujson** - Uses uJSON for serialization
 
 ## Usage
 
