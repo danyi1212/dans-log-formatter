@@ -23,7 +23,7 @@ jobs:
         orjson-version: ["latest"]
         fastapi-version: ["latest"]
         flask-version: ["latest"]
-        django-version: ["3", "4"]
+        django-version: ["4"]
         celery-version: ["latest"]
 
     steps:
