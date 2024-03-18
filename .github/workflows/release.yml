@@ -1,0 +1,23 @@
+on:
+  release:
+    types: [ published ]
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: 3.12
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+
+      - name: Publish
+        run: |
+          poetry config pypi-token.pypi "${{ secrets.PYPI_KEY }}"
+          poetry publish --build
