@@ -2,7 +2,7 @@ name: Draft Release package to Test PyPI
 
 on:
   release:
-    types: [ published ]
+    types: [ created ]
 
 jobs:
   pre-release:
