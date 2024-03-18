@@ -1,6 +1,8 @@
+name: Draft Release package to Test PyPI
+
 on:
   release:
-    types: [ created ]
+    types: [ published ]
 
 jobs:
   pre-release:
