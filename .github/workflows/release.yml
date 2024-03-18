@@ -19,15 +19,18 @@ jobs:
       - name: Install Poetry
         uses: snok/install-poetry@v1
 
+      - name: Build package
+        run: poetry build
+
       - name: Publish draft to Test PyPI
         continue-on-error: true
         run: |
           poetry config repositories.testpypi https://test.pypi.org/legacy/
           poetry config pypi-token.testpypi "${{ secrets.TEST_PYPI_TOKEN }}"
-          poetry publish --build -r testpypi
+          poetry publish -r testpypi
 
       - name: Publish to PyPI
         if: github.event_name == 'release' && github.event.action == 'published'
         run: |
           poetry config pypi-token.pypi "${{ secrets.PYPI_TOKEN }}"
-          poetry publish --build
+          poetry publish -r pypi
