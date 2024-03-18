@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "dans-log-formatter"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["danyi1212 <danyi1212@gmail.com>"]
 readme = "README.md"
