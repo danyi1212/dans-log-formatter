@@ -33,4 +33,4 @@ jobs:
         if: github.event_name == 'release' && github.event.action == 'published'
         run: |
           poetry config pypi-token.pypi "${{ secrets.PYPI_TOKEN }}"
-          poetry publish -r pypi
+          poetry publish
