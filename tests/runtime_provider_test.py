@@ -1,6 +1,9 @@
 import asyncio
 import os
+import sys
 import threading
+
+import pytest
 
 from dans_log_formatter.formatter import JsonLogFormatter
 from dans_log_formatter.providers.runtime import RuntimeProvider
@@ -31,6 +34,7 @@ def test_runtime_provider_in_thread():
     assert record["thread"] == f"MyThread ({thread.ident})"
 
 
+@pytest.mark.skipif(sys.version_info < (3, 12), reason="requires python3.12 or higher")
 def test_runtime_provider_in_task():
     logger, stream = logger_factory(JsonLogFormatter([RuntimeProvider()]))
 
