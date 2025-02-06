@@ -1,5 +1,6 @@
 import json
 import sys
+from datetime import datetime
 from logging import Formatter, LogRecord
 from typing import Literal, Optional
 
@@ -145,4 +146,4 @@ class JsonLogFormatter(TextLogFormatter):
         return json.dumps(self.get_attributes(record))
 
     def format_timestamp(self, record: LogRecord):
-        return record.created
+        return datetime.fromtimestamp(record.created).isoformat()
