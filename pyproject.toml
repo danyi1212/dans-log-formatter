@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "dans-log-formatter"
 version = "0.1.1"
-description = ""
+description = "A simple, extendable log formatter for Python"
 authors = ["danyi1212 <danyi1212@gmail.com>"]
 readme = "README.md"
 include = ["dans_log_formatter/"]
