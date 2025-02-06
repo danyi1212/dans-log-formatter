@@ -1,3 +1,4 @@
+from datetime import datetime
 import logging.config
 from io import StringIO
 
@@ -16,10 +17,10 @@ def test_formatter():
 
     record = read_stream_log_line(stream)
     assert record.keys() == DEFAULT_ATTRIBUTES
-    assert isinstance(record["timestamp"], float)
+    assert datetime.fromisoformat(record["timestamp"])
     assert record["status"] == "INFO"
     assert record["message"] == "hello world!"
-    assert record["location"] == "formatter_test-test_formatter#15"
+    assert record["location"] == "formatter_test-test_formatter#16"
     assert record["file"] == __file__
     assert stream.readline() == ""
 
@@ -159,7 +160,7 @@ def test_text_formatter():
 
     stream.seek(0)
     record = stream.readline()
-    assert record == "INFO - formatter_test-test_text_formatter#158, extra value | hello world!\n"
+    assert record == "INFO - formatter_test-test_text_formatter#159, extra value | hello world!\n"
     assert stream.readline() == ""
 
 
@@ -196,7 +197,7 @@ def test_logging_dict_config():
 
     record = read_stream_log_line(stream)
     assert record.keys() == DEFAULT_ATTRIBUTES | {"context"}
-    assert isinstance(record["timestamp"], float)
+    assert datetime.fromisoformat(record["timestamp"])
     assert record["status"] == "INFO"
     assert record["message"] == "hello world!"
     assert record["context"] == "something"

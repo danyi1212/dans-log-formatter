@@ -99,7 +99,7 @@ def main():
 if __name__ == "__main__":
   main()
 
-# STDOUT: {'timestamp': 1704060000.0, 'status': 'INFO', 'message': 'hello world!', 'location': 'my_module-main#4', 'file': '/Users/danyi1212/projects/my-project/my_module.py'}
+# STDOUT: {'timestamp': '2025-01-01T00:00:00', 'status': 'INFO', 'message': 'hello world!', 'location': 'my_module-main#4', 'file': '/Users/danyi1212/projects/my-project/my_module.py'}
 ```
 
 ## Providers
@@ -128,7 +128,7 @@ logger = logging.getLogger(__name__)
 with inject_log_context({"user_id": 123}):
   logger.info("Hello, world!")
 
-# STDOUT: {'timestamp': 1704060000.0, 'status': 'INFO', 'message': 'hello world!', 'user_id': 123, ...}
+# STDOUT: {'timestamp': '2025-01-01T00:00:00', 'status': 'INFO', 'message': 'hello world!', 'user_id': 123, ...}
 ```
 
 Alternatively, use it as `@inject_log_context()` decorator
@@ -144,7 +144,7 @@ logger = logging.getLogger(__name__)
 def my_function():
   logger.info("Hello, world!")
 
-# STDOUT: {'timestamp': 1704060000.0, 'status': 'INFO', 'message': 'hello world!', 'custom_context': 'value', ...}
+# STDOUT: {'timestamp': '2025-01-01T00:00:00', 'status': 'INFO', 'message': 'hello world!', 'custom_context': 'value', ...}
 ```
 
 ### Extra Provider
@@ -156,7 +156,7 @@ import logging
 
 logger = logging.getLogger(__name__)
 logger.info("Hello, world!", extra={"user_id": 123})
-# STDOUT: {'timestamp': 1704060000.0, 'status': 'INFO', 'message': 'hello world!', 'user_id': 123, ...}
+# STDOUT: {'timestamp': '2025-01-01T00:00:00', 'status': 'INFO', 'message': 'hello world!', 'user_id': 123, ...}
 ```
 
 ### Runtime Provider
@@ -220,7 +220,7 @@ logger = logging.getLogger(__name__)
 token = current_user_context.set(User(id=123, name="John Doe"))
 logger.info("Hello, world!")
 current_user_context.reset(token)
-# STDOUT: {'timestamp': 1704060000.0, 'status': 'INFO', 'message': 'Hello, world!', 'user.id': 123, 'user.name': 'John Doe', ...}
+# STDOUT: {'timestamp': '2025-01-01T00:00:00', 'status': 'INFO', 'message': 'Hello, world!', 'user.id': 123, 'user.name': 'John Doe', ...}
 ```
 
 ## Integrations
