@@ -45,9 +45,11 @@ testpaths = ["tests"]
 create = true
 in-project = true
 
+
 [tool.ruff]
 line-length = 120
 src = ["dans_log_formatter", "tests"]
+target-version = "py39"
 
 [tool.ruff.lint]
 select = [
@@ -70,6 +72,7 @@ select = [
     "RUF", # ruff rules
 ]
 
+
 [tool.mypy]
 python_version = "3.9"
 namespace_packages = true
@@ -85,7 +88,6 @@ warn_return_any = true
 disallow_untyped_defs = true
 disallow_untyped_calls = true
 disallow_untyped_decorators = true
-
 
 [[tool.mypy.overrides]]
 module = "tests"

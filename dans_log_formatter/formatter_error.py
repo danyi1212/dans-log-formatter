@@ -1,7 +1,7 @@
 from types import TracebackType
-from typing import NamedTuple, Type, Union
+from typing import NamedTuple, Union
 
-ExecInfo = tuple[Type[BaseException], BaseException, TracebackType]
+ExecInfo = tuple[type[BaseException], BaseException, TracebackType]
 
 
 class FormatterError(NamedTuple):
